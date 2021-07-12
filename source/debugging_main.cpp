@@ -1,6 +1,6 @@
+#include "comp6771/euclidean_vector.hpp"
 #include <iostream>
 #include <vector>
-#include "comp6771/euclidean_vector.hpp"
 
 // Please note: it's not good practice to test your code via a main function that does
 //  printing. Instead, you should be using your test folder. This file should only really
@@ -23,7 +23,7 @@ auto main() -> int {
 	// std::cout << d.dimensions() << std::endl;
 
 	// auto e = comp6771::euclidean_vector{1.1, 2.2, 3.3, 5.5};
-	//std::cout << e.dimensions() << std::endl;
+	// std::cout << e.dimensions() << std::endl;
 
 	// auto e = comp6771::euclidean_vector{1.1, 2.2, 3.3, 5.5};
 	// auto f = comp6771::euclidean_vector(e);
@@ -111,14 +111,14 @@ auto main() -> int {
 	// auto const a = comp6771::euclidean_vector{0.0, 1.0, 2.0};
 	// auto lf = static_cast<std::list<double>>(a);
 	// for (auto const &i: lf) {
-    //     std::cout << i << std::endl;
-    // }
+	//     std::cout << i << std::endl;
+	// }
 
-    // auto const a = comp6771::euclidean_vector{0.0, 1.0, 2.0};
+	// auto const a = comp6771::euclidean_vector{0.0, 1.0, 2.0};
 	// auto const lf = static_cast<std::list<double>>(a);
 	// for (auto const &i: lf) {
-    //     std::cout << i << std::endl;
-    // }
+	//     std::cout << i << std::endl;
+	// }
 
 	// auto e = comp6771::euclidean_vector{1.1, 2.2, 3.3, 5.2};
 	// auto g = comp6771::euclidean_vector{1.1, 2.2, 3.3, 5.2};
@@ -177,6 +177,8 @@ auto main() -> int {
 	// auto g = comp6771::euclidean_vector{1, 2, 3};
 	// auto result = comp6771::euclidean_norm(g);
 	// std::cout << result << std::endl;
+	// auto result2 = comp6771::euclidean_norm(g);
+	// std::cout << result2 << std::endl;
 	// auto h = comp6771::euclidean_vector{0};
 	// std::cout << comp6771::euclidean_norm(h) << std::endl;
 
@@ -197,4 +199,8 @@ auto main() -> int {
 	// auto f = comp6771::euclidean_vector{3, 4};
 	// auto c = double{comp6771::dot(e, f)};
 	// std::cout << c << std::endl;
+
+	// auto a = comp6771::euclidean_vector{1, 2, 3, 4, 5, 6, 7};
+	// auto result = comp6771::unit(a);
+	// std::cout << result << std::endl;
 }

@@ -1,5 +1,11 @@
 cxx_test(
-   TARGET euclidean_vector_test1
-   FILENAME "euclidean_vector_test1.cpp"
+   TARGET basic_tests
+   FILENAME "basic_tests.cpp"
+   LINK euclidean_vector
+)
+
+cxx_test(
+   TARGET harder_tests
+   FILENAME "harder_tests.cpp"
    LINK euclidean_vector
 )

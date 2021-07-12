@@ -28,30 +28,30 @@ namespace comp6771 {
 	// constructors
 	euclidean_vector::euclidean_vector(int dim) {
 		dimension_ = dim;
-		magnitude_ = std::make_unique<double[]>(std::size_t(dim));
+		magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dim));
 		std::fill(magnitude_.get(), magnitude_.get() + dim, 0);
 	}
 	euclidean_vector::euclidean_vector(int dim, double mag) {
 		dimension_ = dim;
-		magnitude_ = std::make_unique<double[]>(std::size_t(dim));
+		magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dim));
 		std::fill(magnitude_.get(), magnitude_.get() + dim, mag);
 	};
 	euclidean_vector::euclidean_vector(std::vector<double>::const_iterator begin,
 	                                   std::vector<double>::const_iterator end) {
 		dimension_ = static_cast<int>((std::distance(begin, end)));
-		magnitude_ = std::make_unique<double[]>(std::size_t(dimension_));
+		magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dimension_));
 		std::transform(begin, end, magnitude_.get(), [](double x) -> double { return x; });
 	}
 	euclidean_vector::euclidean_vector(std::initializer_list<double> list) {
 		dimension_ = static_cast<int>(list.size());
-		magnitude_ = std::make_unique<double[]>(std::size_t(list.size()));
+		magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(list.size()));
 		auto begin = list.begin();
 		auto end = list.end();
 		std::transform(begin, end, magnitude_.get(), [](double x) -> double { return x; });
 	}
 	euclidean_vector::euclidean_vector(euclidean_vector const& vec) {
 		dimension_ = vec.dimension_;
-		magnitude_ = std::make_unique<double[]>(std::size_t(vec.dimension_));
+		magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(vec.dimension_));
 		std::copy(vec.magnitude_.get(), vec.magnitude_.get() + vec.dimension_, magnitude_.get());
 	}
 	euclidean_vector::euclidean_vector(euclidean_vector&& moved_vec) {
@@ -66,7 +66,7 @@ namespace comp6771 {
 	// operators
 	auto euclidean_vector::operator=(euclidean_vector const& target) noexcept -> euclidean_vector& {
 		dimension_ = target.dimension_;
-		magnitude_ = std::make_unique<double[]>(std::size_t(target.dimension_));
+		magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(target.dimension_));
 		std::copy(target.magnitude_.get(),
 		          target.magnitude_.get() + target.dimension_,
 		          magnitude_.get());
@@ -83,15 +83,15 @@ namespace comp6771 {
 	}
 	auto euclidean_vector::operator[](int pos) noexcept -> double& {
 		assert(pos >= 0 and this->dimension_ > pos);
-		return this->magnitude_[std::size_t(pos)];
+		return this->magnitude_[static_cast<std::size_t>(pos)];
 	}
 	auto euclidean_vector::operator[](int pos) const noexcept -> double {
 		assert(pos >= 0 and this->dimension_ > pos);
-		return this->magnitude_[std::size_t(pos)];
+		return this->magnitude_[static_cast<std::size_t>(pos)];
 	}
 	auto euclidean_vector::operator+() noexcept -> euclidean_vector {
 		auto copy = euclidean_vector(dimension_);
-		copy.magnitude_ = std::make_unique<double[]>(std::size_t(dimension_));
+		copy.magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               copy.magnitude_.get(),
@@ -100,7 +100,7 @@ namespace comp6771 {
 	}
 	auto euclidean_vector::operator+() const noexcept -> euclidean_vector {
 		auto copy = euclidean_vector(dimension_);
-		copy.magnitude_ = std::make_unique<double[]>(std::size_t(dimension_));
+		copy.magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               copy.magnitude_.get(),
@@ -109,7 +109,7 @@ namespace comp6771 {
 	}
 	auto euclidean_vector::operator-() noexcept -> euclidean_vector {
 		auto copy = euclidean_vector(dimension_);
-		copy.magnitude_ = std::make_unique<double[]>(std::size_t(dimension_));
+		copy.magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               copy.magnitude_.get(),
@@ -118,7 +118,7 @@ namespace comp6771 {
 	}
 	auto euclidean_vector::operator-() const noexcept -> euclidean_vector {
 		auto copy = euclidean_vector(dimension_);
-		copy.magnitude_ = std::make_unique<double[]>(std::size_t(dimension_));
+		copy.magnitude_ = std::make_unique<double[]>(static_cast<std::size_t>(dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               copy.magnitude_.get(),
@@ -164,7 +164,7 @@ namespace comp6771 {
 		return *this;
 	}
 	euclidean_vector::operator std::vector<double>() noexcept {
-		auto vec = std::vector<double>(std::size_t(this->dimension_));
+		auto vec = std::vector<double>(static_cast<std::size_t>(this->dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               vec.begin(),
@@ -172,7 +172,7 @@ namespace comp6771 {
 		return vec;
 	}
 	euclidean_vector::operator std::vector<double>() const noexcept {
-		auto vec = std::vector<double>(std::size_t(this->dimension_));
+		auto vec = std::vector<double>(static_cast<std::size_t>(this->dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               vec.begin(),
@@ -180,7 +180,7 @@ namespace comp6771 {
 		return vec;
 	}
 	euclidean_vector::operator std::list<double>() noexcept {
-		auto li = std::list<double>(std::size_t(this->dimension_));
+		auto li = std::list<double>(static_cast<std::size_t>(this->dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               li.begin(),
@@ -188,7 +188,7 @@ namespace comp6771 {
 		return li;
 	}
 	euclidean_vector::operator std::list<double>() const noexcept {
-		auto li = std::list<double>(std::size_t(this->dimension_));
+		auto li = std::list<double>(static_cast<std::size_t>(this->dimension_));
 		std::transform(this->magnitude_.get(),
 		               this->magnitude_.get() + dimension_,
 		               li.begin(),

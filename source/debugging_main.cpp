@@ -9,11 +9,11 @@
 
 auto main() -> int {
 	// auto a = comp6771::euclidean_vector();
-	// auto b = comp6771::euclidean_vector(1);
-	// std::cout << b.dimensions() << std::endl;
-	// auto c = comp6771::euclidean_vector(2, 3.0);
 	// std::cout << a.dimensions() << std::endl;
-	// std::cout << c.dimensions() << std::endl;
+	// auto b = comp6771::euclidean_vector(1);
+	// std::cout << b << std::endl;
+	// auto c = comp6771::euclidean_vector(2, 3.0);
+	// std::cout << c << std::endl;
 
 	// std::vector<double> v;
 	// v.push_back(5.0);
@@ -175,7 +175,8 @@ auto main() -> int {
 
 	// comp6771::euclidean_norm(a)
 	// auto g = comp6771::euclidean_vector{1, 2, 3};
-	// std::cout << comp6771::euclidean_norm(g) << std::endl;
+	// auto result = comp6771::euclidean_norm(g);
+	// std::cout << result << std::endl;
 	// auto h = comp6771::euclidean_vector{0};
 	// std::cout << comp6771::euclidean_norm(h) << std::endl;
 
@@ -192,8 +193,8 @@ auto main() -> int {
 	// auto c = double{comp6771::dot(e, g)};
 	// std::cout << c << std::endl;
 
-	// auto e = comp6771::euclidean_vector{3, 4, 6, 10};
-	// auto f = comp6771::euclidean_vector{3, 4, 6, 10};
+	// auto e = comp6771::euclidean_vector{1, 2};
+	// auto f = comp6771::euclidean_vector{3, 4};
 	// auto c = double{comp6771::dot(e, f)};
 	// std::cout << c << std::endl;
 }

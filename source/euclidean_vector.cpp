@@ -8,6 +8,15 @@
 #include <iterator>
 #include <assert.h>
 #include <list>
+#include <numeric>
+
+// helper function
+namespace {
+	struct Normal {
+	    void operator()(double n) { sum += n * n; }
+	    double sum{0.0};
+	};
+}
 
 namespace comp6771 {
 	// constructors
@@ -82,18 +91,16 @@ namespace comp6771 {
 		return copy;
 	}
 	auto euclidean_vector::operator+=(euclidean_vector const& target) -> euclidean_vector& {
-		if (this->dimension_ != target.dimension_) {
+		if (this->dimension_ != target.dimension_)
 			throw std::logic_error("Dimensions of LHS(" + std::to_string(this->dimension_) + ") and RHS("
 			                       + std::to_string(target.dimension_) + ") do not match");
-		}
 		std::transform(this->magnitude_.get(), this->magnitude_.get() + dimension_, target.magnitude_.get(), this->magnitude_.get(), [](double x, double y) -> double { return x + y; });
 		return *this;
 	}
 	auto euclidean_vector::operator-=(euclidean_vector const& target) -> euclidean_vector& {
-		if (this->dimension_ != target.dimension_) {
+		if (this->dimension_ != target.dimension_)
 			throw std::logic_error("Dimensions of LHS(" + std::to_string(this->dimension_) + ") and RHS("
 			                       + std::to_string(target.dimension_) + ") do not match");
-		}
 		std::transform(this->magnitude_.get(), this->magnitude_.get() + dimension_, target.magnitude_.get(), this->magnitude_.get(), [](double x, double y) -> double { return x - y; });
 		return *this;
 	}
@@ -102,9 +109,8 @@ namespace comp6771 {
 		return *this;
 	}
 	auto euclidean_vector::operator/=(double num) -> euclidean_vector& {
-		if (num == 0) {
+		if (num == 0)
 			throw std::logic_error("Invalid vector division by 0");
-		}
 		std::transform(this->magnitude_.get(), this->magnitude_.get() + dimension_, this->magnitude_.get(), [&num](double x) -> double { return x / num; });
 		return *this;
 	}
@@ -129,49 +135,37 @@ namespace comp6771 {
 	    return li;
 	}
 
-	struct Sum
-{
-    void operator()(int n) { sum += n; }
-    int sum{0};
-};
-
 	// utilities
 	auto euclidean_norm(euclidean_vector const& v) noexcept -> double {
-		//auto total = 0.0;
-		//std::remove_const<euclidean_vector const&>::type v;
-		auto vec = std::const_cast<int>(v);
-		// auto end = &v.at(v.dimensions());
-		// Sum s = std::for_each(begin, end, Sum());
-		return 2;
+		auto vec = const_cast<euclidean_vector&>(v);
+		auto begin = &vec.at(0);
+		auto s = std::for_each(begin, begin + vec.dimensions(), Normal());
+		return sqrt(s.sum);
 	}
 
 	auto unit(euclidean_vector const& v) -> euclidean_vector {
-		if(v.dimensions() == 0) {
+		if(v.dimensions() == 0)
 			throw std::out_of_range("euclidean_vector with no dimensions does not have a unit vector");
-		}
-		auto vec = euclidean_vector(v.dimensions());
 		auto norm = euclidean_norm(v);
-		if(norm == 0) {
+		if(norm == 0)
 			throw std::out_of_range("euclidean_vector with zero euclidean normal does not have a unit vector");
-		}// TODO
-		for (std::size_t(i) = 0; i < static_cast<std::size_t>(v.dimensions()); i++) {
-			auto add = &vec.at(int(i));
-			*add = v.at(int(i)) / norm;
-		}
-		return vec;
+		auto unit_vec = euclidean_vector(v.dimensions());
+		auto unit_begin = &unit_vec.at(0);
+		auto vec = const_cast<euclidean_vector&>(v);
+		auto begin = &vec.at(0);
+		std::transform(begin, begin + vec.dimensions(), unit_begin, [&norm](double x) -> double { return x / norm; });
+		return unit_vec;
 	}
 
 	auto dot(euclidean_vector const& x, euclidean_vector const& y) -> double {
-		if(x.dimensions() != y.dimensions()) {
+		if(x.dimensions() != y.dimensions())
 			throw std::out_of_range("Dimensions of LHS(" + std::to_string(x.dimensions()) + ") and RHS("
 					                       + std::to_string(y.dimensions()) + ") do not match");
-		}
-		auto product = 0.0;
-		// TODO
-		for (std::size_t(i) = 0; i < static_cast<std::size_t>(x.dimensions()); i++) {
-			product += x.at(int(i)) * y.at(int(i));
-		}
-		return product;
+		auto temp_x = const_cast<euclidean_vector&>(x);
+		auto temp_x_begin = &temp_x.at(0);
+		auto temp_y = const_cast<euclidean_vector&>(y);
+		std::transform(temp_x_begin, temp_x_begin + temp_x.dimensions(), &temp_y.at(0), temp_x_begin, [](double x, double y) -> double { return x * y; });
+		return std::accumulate(temp_x_begin, temp_x_begin + temp_x.dimensions(), 0);
 	}
 
 } // namespace comp6771

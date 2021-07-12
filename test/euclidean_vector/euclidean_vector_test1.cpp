@@ -7,7 +7,7 @@
 TEST_CASE("no constructors") {
 	auto const a1 = comp6771::euclidean_vector();
 
-	auto oss = std::ostringstream{};
+	auto oss = std::stringstream();
 	oss << a1;
 	CHECK(oss.str() == "[0]");
 }

@@ -9,6 +9,7 @@
 #include <vector>
 #include <math.h>
 #include <list>
+#include <experimental/iterator>
 
 namespace comp6771 {
 	class euclidean_vector_error : public std::runtime_error {
@@ -66,33 +67,22 @@ namespace comp6771 {
 
 		// friends
 		friend auto operator==(euclidean_vector const& lhs, euclidean_vector const& rhs) -> bool {
-			// TODO
-			for (std::size_t(i) = 0; i < static_cast<std::size_t>(lhs.dimension_); i++) {
-				if(lhs.magnitude_[i] != rhs.magnitude_[i]) {
-					return false;
-				}
-			}
-			if (lhs.dimension_ != rhs.dimension_) {
-				return false;
-			}
-			return true;
+			return std::equal(lhs.magnitude_.get(), lhs.magnitude_.get() + lhs.dimension_, rhs.magnitude_.get());
 		}
 		friend auto operator!=(euclidean_vector const& lhs, euclidean_vector const& rhs) -> bool {
 			return !(lhs == rhs);
 		}
 		friend auto operator+(euclidean_vector const& lhs, euclidean_vector const& rhs) -> euclidean_vector {
-			if (lhs.dimension_ != rhs.dimension_) {
+			if (lhs.dimension_ != rhs.dimension_)
 				throw std::logic_error("Dimensions of LHS(" + std::to_string(lhs.dimension_) + ") and RHS("
 				                       + std::to_string(rhs.dimension_) + ") do not match");
-			}
 			std::transform(lhs.magnitude_.get(), lhs.magnitude_.get() + lhs.dimension_, rhs.magnitude_.get(), lhs.magnitude_.get(), [](double x, double y) -> double { return x + y; });
 			return lhs;
 		}
 		friend auto operator-(euclidean_vector const& lhs, euclidean_vector const& rhs) -> euclidean_vector {
-			if (lhs.dimension_ != rhs.dimension_) {
+			if (lhs.dimension_ != rhs.dimension_)
 				throw std::logic_error("Dimensions of LHS(" + std::to_string(lhs.dimension_) + ") and RHS("
 				                       + std::to_string(rhs.dimension_) + ") do not match");
-			}
 			std::transform(lhs.magnitude_.get(), lhs.magnitude_.get() + lhs.dimension_, rhs.magnitude_.get(), lhs.magnitude_.get(), [](double x, double y) -> double { return x - y; });
 			return lhs;
 		}
@@ -105,23 +95,14 @@ namespace comp6771 {
 			return rhs;
 		}
 		friend auto operator/(euclidean_vector const& lhs, double num) -> euclidean_vector {
-			if (num == 0) {
+			if (num == 0)
 				throw std::logic_error("Invalid vector division by 0");
-			}
 			std::transform(lhs.magnitude_.get(), lhs.magnitude_.get() + lhs.dimension_, lhs.magnitude_.get(), [&num](double x) -> double { return x / num; });
 			return lhs;
 		}
 		friend auto operator<<(std::ostream& os, euclidean_vector const& vec) -> std::ostream& {
 			os << "[";
-			// TODO
-			for (std::size_t(i) = 0; i < static_cast<std::size_t>(vec.dimension_); i++) {
-				if (i == static_cast<std::size_t>(vec.dimension_ - 1)) {
-					os << vec.magnitude_[i];
-				}
-				else {
-					os << vec.magnitude_[i] << " ";
-				}
-			}
+			std::copy(vec.magnitude_.get(), vec.magnitude_.get() + vec.dimension_, std::experimental::make_ostream_joiner(os, " "));
 			os << "]";
 			return os;
 		}

@@ -17,3 +17,9 @@ cxx_library(
    TARGET "euclidean_vector"
    FILENAME "euclidean_vector.cpp"
 )
+
+cxx_executable(
+	TARGET debugging_main
+	FILENAME debugging_main.cpp
+	LINK euclidean_vector
+)
